@@ -1,5 +1,4 @@
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,16 +17,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -36,9 +31,10 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Stop;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.stage.Stage;
-
 
 public class Drawable extends Application {
 	
@@ -48,7 +44,7 @@ public class Drawable extends Application {
 	private static ArrayList<String> imagesList = new ArrayList<String>();
 	
 	
-	public Image originalImage = new Image(Drawable.class.getResourceAsStream("Picture1.jpg"));
+	public Image originalImage = new Image(Drawable.class.getResourceAsStream("FE.jpg"));
 	public ImageView img;
 	public static PixelReader pix;
 	public Group group;
@@ -58,21 +54,16 @@ public class Drawable extends Application {
 	public GridPane grid;
 	public Canvas drawArea;
 	public GraphicsContext gc;
-	public BorderPane wrapperPane;
-	public BorderPane borderPane;
 	public static Slider toolThickness;
-	public static String toolVal, colorVal, effectVal;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
 		VBox root = new VBox();
-		wrapperPane = new BorderPane();
-		borderPane = new BorderPane();
 		Scene s = new Scene(root, 1280, 670);
 		group = new Group();
 	
-		
+
 				
 		drawArea = new Canvas(originalImage.getWidth(), originalImage.getHeight());
 		gc = drawArea.getGraphicsContext2D();
@@ -118,11 +109,6 @@ public class Drawable extends Application {
 		
 		
 		stage.setTitle("Editing Software");
-		borderPane.setCenter(wrapperPane);
-		wrapperPane.setCenter(drawArea);
-		
-		drawArea.widthProperty().addListener(event -> setCanvas(drawArea, image, scene));
-        drawArea.heightProperty().addListener(event -> setCanvas(drawArea, image, scene));
 		
 		setCanvas(drawArea, image, scene);
 		
@@ -139,10 +125,8 @@ public class Drawable extends Application {
 		img.setImage(image);
 		pix = img.getImage().getPixelReader();
 		
-		
-		
-		ComboBox toolsBox = makeComboBox((toolMap.keySet()).toArray(new String[toolMap.keySet().size()]));
-		grid.add(toolsBox, 1, 2);
+		ComboBox tools = makeComboBox((toolMap.keySet()).toArray(new String[toolMap.keySet().size()]));
+		grid.add(tools, 1, 2);
 
 		
 		ComboBox combob = makeComboBox((optionsMap.keySet()).toArray(new String[optionsMap.keySet().size()]));
@@ -169,7 +153,7 @@ public class Drawable extends Application {
 		
 		
 			
-			drawArea.setOnMouseDragged(event -> toolMap.get(toolVal).draw(drawArea, event, ((colorVal.equals("Color Picked") || toolVal.equals("Color Picker"))? (Color) colorMap.get("Color Picked"): colorVal != null? Color.web((String)colorVal) : Color.WHITE), TRUE_COLORS, colorsBox, grid));
+			drawArea.setOnMouseDragged(event -> toolMap.get(tools.getValue()).draw(drawArea, event, ((colorsBox.getValue().equals("Color Picked") || tools.getValue().equals("Color Picker"))? (Color) colorMap.get("Color Picked"): colorsBox.getValue() != null? Color.web((String)colorsBox.getValue()) : Color.WHITE), TRUE_COLORS, colorsBox, grid));
 		
 		
 		//		tools.setOnMouseClicked(event -> toolMap.get(tools.getValue()).select(colorsBox));
@@ -189,7 +173,7 @@ public class Drawable extends Application {
 				
 				if(combob.getValue() != null)makeCurrentImage(optionsMap.get(combob.getValue()), scene);
 				System.out.println(combob.getValue());
-				System.out.println(toolsBox.getValue());
+				System.out.println(tools.getValue());
 				
 			}
 		
@@ -204,34 +188,13 @@ public class Drawable extends Application {
 		
 	    root = new HBox();
 //	    root.getChildren().add(img);
-	    borderPane.getChildren().add(drawArea);
+	    root.getChildren().add(drawArea);
 	    
-//		root.getChildren().add(grid);
-		MenuBar menuBar = new MenuBar();
-		Menu effects = new Menu("Effects");
-		Menu tools = new Menu("Tools");
-		Menu colors = new Menu("Colors");
+		root.getChildren().add(grid);
 		
-		
-		addEffectMenuItems(optionsMap.keySet().toArray(), effects);
-		addToolMenuItems(toolMap.keySet().toArray(), tools);
-		addColorMenuItems(colorMap.keySet().toArray(), colors);
-		
-//		MenuItem menuitem = new MenuIte
-		menuBar.getMenus().addAll(effects, tools, colors);
-		
-		
-		borderPane.setTop(menuBar);
-		
-		
-		
-		borderPane.getChildren().add(root);
-		Scene s = new Scene(borderPane, 1280, 670);
-		s.getStylesheets().add(Drawable.class.getResource("fancy.css").getFile());
-		
-		s.setRoot(borderPane);
-//		initCircles(group, s);
-		stage.setScene(s);
+		scene.setRoot(root);
+//		initCircles(group, scene);
+		stage.setScene(scene);
 		stage.show();
 		
 		
@@ -239,8 +202,6 @@ public class Drawable extends Application {
 	
 	public void setCanvas(Canvas canvas, Image image, Scene s) {
 		
-		canvas.widthProperty().bind(wrapperPane.widthProperty());
-		canvas.heightProperty().bind(wrapperPane.heightProperty());
 		gc.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight());
 		
 	}
@@ -512,39 +473,6 @@ public class Drawable extends Application {
 		
 	}
 	
-	public void addToolMenuItems(Object[] items, Menu menu ) {
-		
-		for(Object a: items)
-		{
-			MenuItem menuItem = new MenuItem((String)a);
-			menuItem.setOnAction(e -> toolVal = (String)a);
-			menu.getItems().addAll(menuItem);
-		}
-		
-	}
-	
-	public void addEffectMenuItems(Object[] items, Menu menu) {
-		
-		for(Object a: items)
-		{
-			MenuItem menuItem = new MenuItem((String)a);
-			menuItem.setOnAction(e -> effectVal = (String)a);
-			menu.getItems().addAll(menuItem);
-		}
-		
-	}
-	public void addColorMenuItems(Object[] items, Menu menu) {
-		
-		for(Object a: items)
-		{
-			MenuItem menuItem = new MenuItem((String)a);
-			menuItem.setOnAction(e -> colorVal = (String)a);
-			menu.getItems().addAll(menuItem);
-		}
-		
-	}
-		
-	
 	public static void main(String[] args) {
 		launch(args);
 		
@@ -559,3 +487,6 @@ public class Drawable extends Application {
 	
 
 }
+
+
+
