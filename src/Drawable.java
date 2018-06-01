@@ -58,9 +58,9 @@ public class Drawable extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+	try {	
 		VBox root = new VBox();
-		Scene s = new Scene(root, 1280, 670);
+		Scene s = new Scene(root);
 		group = new Group();
 	
 
@@ -73,7 +73,9 @@ public class Drawable extends Application {
 		System.out.println();
 		
 		build(primaryStage, s, originalImage);
-		
+	}catch(Exception e) {
+		e.printStackTrace();
+	}
 		
 	}
 	

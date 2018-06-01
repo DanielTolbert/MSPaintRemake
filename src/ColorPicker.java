@@ -25,7 +25,6 @@ public class ColorPicker implements Tool{
 		
 		if (Drawable.isWithinImage(event.getX(), event.getY(), colors.length, colors[0].length )) {
 			
-			System.err.println("WE R IN MY MAN");
 			
 			Color c = (colors[(int)event.getX()][(int)event.getY()]);
 				Drawable.getColorMap().replace("Color Picked", c);

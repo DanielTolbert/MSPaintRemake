@@ -15,9 +15,11 @@ public class Pen implements Tool{
 	public GraphicsContext draw(Canvas canvas, MouseEvent event, Paint fill, Color[][] colors, ComboBox combo, GridPane grid) {
 		
 		gc = canvas.getGraphicsContext2D();
-		gc.setFill(fill);	
-		gc.fillOval(event.getX(), event.getY(), Drawable.getTheSlider().getValue(), Drawable.getTheSlider().getValue());
-	    return gc;
+		try {
+			gc.setFill(fill);	
+			gc.fillOval(event.getX(), event.getY(), Drawable.getTheSlider().getValue(), Drawable.getTheSlider().getValue());
+		}catch(Exception e) {}
+		return gc;
 
 	}
 
