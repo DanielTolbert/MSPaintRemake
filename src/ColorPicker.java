@@ -30,7 +30,7 @@ public class ColorPicker implements Tool{
 			Color c = (colors[(int)event.getX()][(int)event.getY()]);
 				Drawable.getColorMap().replace("Color Picked", c);
 				combo.setItems(FXCollections.observableArrayList((Drawable.getColorMap().keySet().toArray(new String[Drawable.getColorMap().keySet().size()]))));
-			
+				combo.setValue("Color Picked");
 		}
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		

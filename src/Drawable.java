@@ -44,7 +44,7 @@ public class Drawable extends Application {
 	private static ArrayList<String> imagesList = new ArrayList<String>();
 	
 	
-	public Image originalImage = new Image(Drawable.class.getResourceAsStream("FE.jpg"));
+	public Image originalImage = new Image(Drawable.class.getResourceAsStream("todoroki.jpg"));
 	public ImageView img;
 	public static PixelReader pix;
 	public Group group;
@@ -89,6 +89,7 @@ public class Drawable extends Application {
 		toolMap.put("Pen", (new Pen()));
 		toolMap.put("Color Picker", new ColorPicker());
 		toolMap.put("Eraser", new Eraser());
+		toolMap.put("Smudger", new Smudge());
 //		toolMap.put("Line Tool", new LineTool());
 		
 		
@@ -126,11 +127,13 @@ public class Drawable extends Application {
 		pix = img.getImage().getPixelReader();
 		
 		ComboBox tools = makeComboBox((toolMap.keySet()).toArray(new String[toolMap.keySet().size()]));
+		tools.setValue("Pen");
 		grid.add(tools, 1, 2);
 
 		
 		ComboBox combob = makeComboBox((optionsMap.keySet()).toArray(new String[optionsMap.keySet().size()]));
 		Button goButton = new Button("Go!");
+		combob.setValue("Revert");
 		
 		ComboBox colorsBox = makeComboBox((colorMap.keySet()).toArray((new String[colorMap.keySet().size()])));
 		grid.add(colorsBox, 1, 4);
@@ -140,7 +143,7 @@ public class Drawable extends Application {
 		
 		toolThickness = new Slider();
 		toolThickness.setMin(1);
-		toolThickness.setMax(20);
+		toolThickness.setMax(50);
 		toolThickness.setShowTickLabels(true);
 		toolThickness.setShowTickMarks(false);
 		toolThickness.setMajorTickUnit(5);
