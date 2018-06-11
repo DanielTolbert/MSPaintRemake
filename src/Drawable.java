@@ -38,23 +38,23 @@ import javafx.stage.Stage;
 
 public class Drawable extends Application {
 	
-	public static HashMap<String, Image> optionsMap = new HashMap<String, Image>();
-	public static HashMap<String, Tool> toolMap = new HashMap<String, Tool>();
+	private static HashMap<String, Image> optionsMap = new HashMap<String, Image>();
+	private static HashMap<String, Tool> toolMap = new HashMap<String, Tool>();
 	private static HashMap<String, Color> colorMap = new HashMap<String, Color>();
 	private static ArrayList<String> imagesList = new ArrayList<String>();
 	
 	
-	public Image originalImage = new Image(Drawable.class.getResourceAsStream("todoroki.jpg"));
-	public ImageView img;
-	public static PixelReader pix;
-	public Group group;
+	private Image originalImage = new Image(Drawable.class.getResourceAsStream("todoroki.jpg"));
+	private ImageView img;
+	private static PixelReader pix;
+	private Group group;
 	
-	public Color[][] TRUE_COLORS;
-	public HBox root;
-	public GridPane grid;
-	public Canvas drawArea;
-	public GraphicsContext gc;
-	public static Slider toolThickness;
+	private Color[][] TRUE_COLORS;
+	private HBox root;
+	private GridPane grid;
+	private Canvas drawArea;
+	private GraphicsContext gc;
+	private static Slider toolThickness;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {

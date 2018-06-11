@@ -11,11 +11,6 @@ import javafx.scene.paint.Paint;
 public interface Tool {
 	
 	void select(ComboBox combo);
-//	WritableImage draw(WritableImage wri, PixelWriter pwx);
-//	GraphicsContext draw(Canvas canvas, MouseEvent event);
-//	GraphicsContext draw(Canvas canvas, MouseEvent event, Paint fill);
-//	GraphicsContext draw(Canvas canvas, MouseEvent event,  Paint fill, Color[][] colors);
-//	GraphicsContext draw(Canvas canvas, MouseEvent event,  Paint fill, Color[][] colors, ComboBox combo);
 	GraphicsContext draw(Canvas canvas, MouseEvent event, Paint fill, Color[][] colors, ComboBox combo, GridPane grid);
 
 	
